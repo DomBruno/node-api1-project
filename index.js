@@ -15,7 +15,9 @@ server.use(express.json());
 
 // Block root path
 server.get('/', (req, res) => {
-  res.status(403)('Forbidden');
+  res
+  .status(403)
+  .json({success: false, errorMessage: 'Forbidden'});
 });
 
 // Add User
@@ -25,7 +27,7 @@ server.post('/api/users', (req, res) => {
   if (!name || !bio) {
     res
       .status(400)
-      .json({ errorMessage: 'Please provide name and bio for the user.' });
+      .json({success: false, errorMessage: 'Please provide name and bio for the user.' });
   } else {
     db.insert(req.body)
       .then(user => {
@@ -36,7 +38,7 @@ server.post('/api/users', (req, res) => {
       .catch(() => {
         res
         .status(500)
-        .json({errorMessage: 'There was an error while saving the user to the database',
+        .json({success: false, errorMessage: 'There was an error while saving the user to the database',
         });
       });
   }
@@ -101,7 +103,7 @@ server.put('api/users/:id', (req, res) => {
   if (!name || !bio) {
     res
       .status(400)
-      .json({ errorMessage: 'Please provide name and bio for the user.' });
+      .json({success: false, errorMessage: 'Please provide name and bio for the user.' });
   } else {
     db.update(req.params.id, req.body)
       .then(user => {
@@ -118,7 +120,8 @@ server.put('api/users/:id', (req, res) => {
       .catch(err => {
         res
         .status(500)
-        .json({errorMessage: 'The user information could not be modified.'});
+        .json({success: false, errorMessage: 'The user information could not be modified.'});
       });
-    };
-};
+    }
+})
+      }});
